@@ -36,7 +36,7 @@ class Ventana:
         t.Label(frame,text="English Num").grid(row=4,column=1)
         self.num=t.Entry(frame)
         self.num.grid(row=4,column=2)
-        
+        #los valores obtenidos de self.num son string!!!!! 
         #Unit
         Label(frame,text="Unit").grid(row=5,column=1)
         self.unit=Entry(frame)
@@ -86,28 +86,39 @@ class Ventana:
                 con.commit()
             return result
         
+    #def obtenervar():
+
+        
     def getproduct(self,var):
+        print(type(var))
         record=self.tree.get_children()
         for element in record:
             self.tree.delete(element)
-        if var==1:
+        if var==1 or self.num.get()=="1":
             query="SELECT* from ENGLISH Where englishNum=1"
-        elif var==2:
+            print("var=1")
+        elif var==2 or self.num.get()=="2":
             query="SELECT* from ENGLISH Where englishNum=2"
-        elif var==3:
+            print("var=2")
+        elif var==3 or self.num.get()=="3":
             query="SELECT* from ENGLISH Where englishNum=3"
-        elif var==4:
+            print("var=3")
+        elif var==4 or self.num.get()=="4":
             query="SELECT* from ENGLISH Where englishNum=4"
-        elif var==5:
+            print("var=4")
+        elif var==5 or self.num.get()=="5":
             query="SELECT* from ENGLISH Where englishNum=5"
-        elif var==6:
+            print("var=5")
+        elif var==6 or self.num.get()=="6":
             query="SELECT* from ENGLISH Where englishNum=6"
+            print("var=6")
         else:
             query="SELECT* from ENGLISH Where englishNum=1"  # para evitar error de query referenced before asignment
-            
+            print("no hay")
         db_rows=self.runquery(query)
         for row in db_rows:
             self.tree.insert("",0,text=row[1],values=row[2])
+            print("get product ejecuto  \n")
             
             
     def validation(self):
@@ -120,18 +131,18 @@ class Ventana:
             parameters=(self.num.get(),self.word.get(),self.unit.get(),self.mean.get())
             self.runquery(query,parameters)
             self.message["text"]="Word {} added successfully".format(self.word.get())
+            self.getproduct(var)
             self.num.delete(0,END)
             self.word.delete(0,END)
             self.unit.delete(0,END)
             self.mean.delete(0,END)
-            self.getproduct(var)
         else:
             self.message["text"]="fill with all the neccesary information please"
             
     def deleteword(self,var):
         self.message['text']=''
         try:
-            self.tree.item(self.tree.selection())['text'][0]           #se obtine la primera letra de word,se verifica que se seleccione la palabra
+            self.tree.item(self.tree.selection())['text'][0]           #se obtiene la primera letra de word,se verifica que se seleccione la palabra
         except IndexError as e:
             self.message["text"]='Select some word to delete'
             return
@@ -148,8 +159,3 @@ if __name__=="__main__":
     window=t.Tk()
     appliction=Ventana(window)
     window.mainloop()
-    
-    
-
-
-
